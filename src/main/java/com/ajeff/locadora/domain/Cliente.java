@@ -1,37 +1,39 @@
 package com.ajeff.locadora.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
-public class Estado implements Serializable{
+public class Cliente implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	private String cpf;
+	private String email;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidades = new ArrayList<>();
+	@ElementCollection
+	@CollectionTable(name = "TELEFONE")
+	private Set<String> telefones = new HashSet<>();
 	
-	public Estado() {}
+	public Cliente () {}
 
-	public Estado(Long id, String nome) {
+	public Cliente(Long id, String nome, String cpf, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.cpf = cpf;
+		this.email = email;
 	}
 
 	public Long getId() {
@@ -50,12 +52,28 @@ public class Estado implements Serializable{
 		this.nome = nome;
 	}
 
-	public List<Cidade> getCidades() {
-		return cidades;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setCidades(List<Cidade> cidades) {
-		this.cidades = cidades;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Set<String> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(Set<String> telefones) {
+		this.telefones = telefones;
 	}
 
 	@Override
@@ -74,7 +92,7 @@ public class Estado implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Estado other = (Estado) obj;
+		Cliente other = (Cliente) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -83,4 +101,6 @@ public class Estado implements Serializable{
 		return true;
 	}
 	
+	
+
 }

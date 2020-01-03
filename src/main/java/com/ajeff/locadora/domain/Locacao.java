@@ -1,37 +1,39 @@
 package com.ajeff.locadora.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-public class Estado implements Serializable{
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Locacao implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidades = new ArrayList<>();
+	@JsonFormat(pattern = "dd/MM/yyy")
+	private Date instante;
 	
-	public Estado() {}
+	@JsonFormat(pattern = "dd/MM/yyy")
+	private Date devolucao;
+	
+	public Locacao () {}
 
-	public Estado(Long id, String nome) {
+	public Locacao(Long id, Date instante, Date devolucao) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.instante = instante;
+		this.devolucao = devolucao;
 	}
 
 	public Long getId() {
@@ -42,20 +44,20 @@ public class Estado implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Date getInstante() {
+		return instante;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setInstante(Date instante) {
+		this.instante = instante;
 	}
 
-	public List<Cidade> getCidades() {
-		return cidades;
+	public Date getDevolucao() {
+		return devolucao;
 	}
 
-	public void setCidades(List<Cidade> cidades) {
-		this.cidades = cidades;
+	public void setDevolucao(Date devolucao) {
+		this.devolucao = devolucao;
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public class Estado implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Estado other = (Estado) obj;
+		Locacao other = (Locacao) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -83,4 +85,6 @@ public class Estado implements Serializable{
 		return true;
 	}
 	
+	
+
 }

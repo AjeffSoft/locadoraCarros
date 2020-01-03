@@ -15,33 +15,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ajeff.locadora.domain.Estado;
-import com.ajeff.locadora.services.EstadoService;
+import com.ajeff.locadora.domain.Endereco;
+import com.ajeff.locadora.services.EnderecoService;
 
 @RestController
-@RequestMapping("/estados")
-public class EstadoResource {
+@RequestMapping(value = "/enderecos")
+public class EnderecoResource {
 
 	@Autowired
-	private EstadoService service;
+	private EnderecoService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Estado>> lista(){
-		List<Estado> list = service.lista();
+	public ResponseEntity<List<Endereco>> find(){
+		List<Endereco> list = service.lista();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Estado> findOne(@PathVariable Long id){
-		Estado obj = service.buscar(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<Endereco> findOne(@PathVariable Long id){
+		Endereco c = service.buscar(id);
+		return ResponseEntity.ok().body(c);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Estado> salvar(@RequestBody Estado obj){
-		obj = service.salvar(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<Endereco> save (@RequestBody Endereco c){
+		service.salvar(c);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(c.getId()).toUri();
+		return ResponseEntity.created(uri).body(c);
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -51,7 +51,7 @@ public class EstadoResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Estado> update(@PathVariable Long id, @RequestBody Estado obj){
+	public ResponseEntity<Endereco> update(@PathVariable Long id, Endereco obj){
 		obj = service.alterar(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}

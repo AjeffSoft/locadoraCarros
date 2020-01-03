@@ -15,31 +15,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ajeff.locadora.domain.Estado;
-import com.ajeff.locadora.services.EstadoService;
+import com.ajeff.locadora.domain.Cliente;
+import com.ajeff.locadora.services.ClienteService;
 
 @RestController
-@RequestMapping("/estados")
-public class EstadoResource {
+@RequestMapping(value = "/clientes")
+public class ClienteResource {
 
 	@Autowired
-	private EstadoService service;
+	private ClienteService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Estado>> lista(){
-		List<Estado> list = service.lista();
+	public ResponseEntity<List<Cliente>> find(){
+		List<Cliente> list = service.lista();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Estado> findOne(@PathVariable Long id){
-		Estado obj = service.buscar(id);
+	public ResponseEntity<Cliente> findOne(@PathVariable Long id){
+		Cliente obj = service.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Estado> salvar(@RequestBody Estado obj){
-		obj = service.salvar(obj);
+	public ResponseEntity<Cliente> save (@RequestBody Cliente obj){
+		service.salvar(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
@@ -51,7 +51,7 @@ public class EstadoResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Estado> update(@PathVariable Long id, @RequestBody Estado obj){
+	public ResponseEntity<Cliente> update(@PathVariable Long id, @RequestBody Cliente obj){
 		obj = service.alterar(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}

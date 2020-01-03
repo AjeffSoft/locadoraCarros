@@ -1,37 +1,35 @@
 package com.ajeff.locadora.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import javax.persistence.OneToOne;
 
 @Entity
-public class Estado implements Serializable{
+public class Sede implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Long id;
-	private String nome;
+	private String s;
+	private String w;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidades = new ArrayList<>();
-	
-	public Estado() {}
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "sede")
+	private Endereco endereco;
 
-	public Estado(Long id, String nome) {
+	public Sede() {}
+	
+	public Sede(Long id, String s, String w, Endereco endereco) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.s = s;
+		this.w = w;
+		this.endereco = endereco;
 	}
 
 	public Long getId() {
@@ -42,20 +40,28 @@ public class Estado implements Serializable{
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getS() {
+		return s;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setS(String s) {
+		this.s = s;
 	}
 
-	public List<Cidade> getCidades() {
-		return cidades;
+	public String getW() {
+		return w;
 	}
 
-	public void setCidades(List<Cidade> cidades) {
-		this.cidades = cidades;
+	public void setW(String w) {
+		this.w = w;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
 	@Override
@@ -74,7 +80,7 @@ public class Estado implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Estado other = (Estado) obj;
+		Sede other = (Sede) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -82,5 +88,6 @@ public class Estado implements Serializable{
 			return false;
 		return true;
 	}
+	
 	
 }

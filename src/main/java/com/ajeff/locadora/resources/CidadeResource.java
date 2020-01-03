@@ -15,33 +15,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.ajeff.locadora.domain.Estado;
-import com.ajeff.locadora.services.EstadoService;
+import com.ajeff.locadora.domain.Cidade;
+import com.ajeff.locadora.services.CidadeService;
 
 @RestController
-@RequestMapping("/estados")
-public class EstadoResource {
+@RequestMapping(value = "/cidades")
+public class CidadeResource {
 
 	@Autowired
-	private EstadoService service;
+	private CidadeService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Estado>> lista(){
-		List<Estado> list = service.lista();
+	public ResponseEntity<List<Cidade>> find(){
+		List<Cidade> list = service.lista();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Estado> findOne(@PathVariable Long id){
-		Estado obj = service.buscar(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<Cidade> findOne(@PathVariable Long id){
+		Cidade c = service.buscar(id);
+		return ResponseEntity.ok().body(c);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Estado> salvar(@RequestBody Estado obj){
-		obj = service.salvar(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<Cidade> save (@RequestBody Cidade cid){
+		service.salvar(cid);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cid.getId()).toUri();
+		return ResponseEntity.created(uri).body(cid);
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -51,7 +51,7 @@ public class EstadoResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Estado> update(@PathVariable Long id, @RequestBody Estado obj){
+	public ResponseEntity<Cidade> update(@PathVariable Long id, Cidade obj){
 		obj = service.alterar(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
